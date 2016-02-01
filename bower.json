@@ -1,13 +1,13 @@
 {
-  "name": "comp392-lesson3-demo",
+  "name": "comp392-lesson4-azure",
   "authors": [
     "Tom Tsiliopoulos <tsiliopoulos@hotmail.com>"
   ],
-  "description": "COMP392-Lesson3-Demo for Advanced Graphics",
+  "description": "COMP392-Lesson4-Azure for Advanced Graphics",
   "main": "",
   "moduleType": [],
   "license": "MIT",
-  "homepage": "https://github.com/CentennialCollege/COMP392-Lesson3-Demo",
+  "homepage": "https://github.com/CentennialCollege/COMP392-Lesson4-Azure",
   "ignore": [
     "**/.*",
     "node_modules",
