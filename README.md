@@ -1,3 +1,3 @@
-#COMP392-Lesson4-Azure
+#COMP392-Lab3
 
-COMP392-Lesson4-Azure for COMP392 - Advanced Graphics @ Centennial College
+COMP392-Lab3 for COMP392 - Advanced Graphics @ Centennial College

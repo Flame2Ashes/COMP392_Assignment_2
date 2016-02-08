@@ -1,13 +1,13 @@
 {
-  "name": "comp392-lesson4-azure",
+  "name": "comp392Lab3",
   "authors": [
-    "Tom Tsiliopoulos <tsiliopoulos@hotmail.com>"
+    "Angelina Gutierrez <angelina.ogutierrez@gmail.com>"
   ],
-  "description": "COMP392-Lesson4-Azure for Advanced Graphics",
+  "description": "COMP392-Lab3 for Advanced Graphics",
   "main": "",
   "moduleType": [],
   "license": "MIT",
-  "homepage": "https://github.com/CentennialCollege/COMP392-Lesson4-Azure",
+  "homepage": "https://github.com/CentennialCollege/COMP392-Lab3",
   "ignore": [
     "**/.*",
     "node_modules",
