@@ -32,5 +32,44 @@ gulp.task('transpile', function () {
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./Scripts/'))
         .on('error', gutil.log)
+        .pipe(connect.reload()); 
 
 });
+
+// This task reloads the browser when any changes occur to html pages
+gulp.task("html", function () {
+    gutil.log("html changed...");
+    gulp.src(HTMLSources)
+    .pipe(connect.reload()); 
+});
+
+// This task reloads the browser when any changes occur to css files
+gulp.task('css', function(){
+   gutil.log("css files changed...");
+   gulp.src(CSSSources)
+   .pipe(connect.reload()); 
+});
+
+// This task watches .ts .js and .html files for any changes
+gulp.task("watch", function () {
+    gulp.watch(TypeScriptSources, ['transpile']);
+    gulp.watch(HTMLSources, ['html']);
+    gulp.watch(HTMLSources, ['css']);
+});
+
+// This task creates a local server and turns on livereload functionality
+gulp.task("connect", function () {
+    connect.server({
+        root: './',
+        livereload: true
+    });
+});
+
+// This task opens Chrome within the local connect server
+gulp.task('open', function () {
+    gulp.src('./index.html')
+        .pipe(open({uri: 'http://localhost:8080', app: 'chrome.exe'}));
+});
+
+// This is the default task that runs everything
+gulp.task("default", ["transpile", "html", "css", "connect", "open", "watch"]);
