@@ -34,8 +34,6 @@ var scene: Scene;
 var renderer: Renderer;
 var camera: PerspectiveCamera;
 var axes: AxisHelper;
-var cube: Mesh;
-var plane: Mesh;
 var sphere: Mesh;
 var ambientLight: AmbientLight;
 var spotLight: SpotLight;
@@ -43,8 +41,9 @@ var control: Control;
 var gui: GUI;
 var stats: Stats;
 var step: number = 0;
-var cubeGeometry:CubeGeometry;
-var cubeMaterial:LambertMaterial;
+
+//Solar system objects
+var sun: Mesh;
 
 
 function init() {
@@ -60,28 +59,14 @@ function init() {
     scene.add(axes);
     console.log("Added Axis Helper to scene...");
     
-    //Add a Plane to the Scene
-    plane = new gameObject(
-        new PlaneGeometry(20, 20, 1, 1),
-        new LambertMaterial({ color: 0xff35ff }),
-        0, 0, 0);
-
-    plane.rotation.x = -0.5 * Math.PI;
-
-    scene.add(plane);
-    console.log("Added Plane Primitive to scene...");
+     //The sun
+     
+     sun = new gameObject(
+         new SphereGeometry(1, 8, 6),
+         new LambertMaterial({ color: 0xff0000}), 
+         0, 0, 0);
     
-    //Add a Cube to the Scene
-    cubeMaterial = new LambertMaterial({color:0x00ff00});
-    cubeGeometry = new CubeGeometry(2, 2, 2);
-    cube = new Mesh(cubeGeometry, cubeMaterial);
-    cube.castShadow = true;
-    cube.receiveShadow = true;
-    cube.position.y = 1;
-    
-    scene.add(cube);
-    console.log("Added Cube Primitive to scene...");
-    
+    scene.add(sun);
     
     // Add an AmbientLight to the scene
     ambientLight = new AmbientLight(0x090909);
@@ -133,8 +118,6 @@ function addStatsObject() {
 // Setup main game loop
 function gameLoop(): void {
     stats.update();
-
-    cube.rotation.y += control.rotationSpeed;
     
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);

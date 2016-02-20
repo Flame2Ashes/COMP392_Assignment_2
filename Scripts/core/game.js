@@ -30,8 +30,6 @@ var scene;
 var renderer;
 var camera;
 var axes;
-var cube;
-var plane;
 var sphere;
 var ambientLight;
 var spotLight;
@@ -39,8 +37,8 @@ var control;
 var gui;
 var stats;
 var step = 0;
-var cubeGeometry;
-var cubeMaterial;
+//Solar system objects
+var sun;
 function init() {
     // Instantiate a new Scene object
     scene = new Scene();
@@ -50,20 +48,9 @@ function init() {
     axes = new AxisHelper(10);
     scene.add(axes);
     console.log("Added Axis Helper to scene...");
-    //Add a Plane to the Scene
-    plane = new gameObject(new PlaneGeometry(20, 20, 1, 1), new LambertMaterial({ color: 0xff35ff }), 0, 0, 0);
-    plane.rotation.x = -0.5 * Math.PI;
-    scene.add(plane);
-    console.log("Added Plane Primitive to scene...");
-    //Add a Cube to the Scene
-    cubeMaterial = new LambertMaterial({ color: 0x00ff00 });
-    cubeGeometry = new CubeGeometry(2, 2, 2);
-    cube = new Mesh(cubeGeometry, cubeMaterial);
-    cube.castShadow = true;
-    cube.receiveShadow = true;
-    cube.position.y = 1;
-    scene.add(cube);
-    console.log("Added Cube Primitive to scene...");
+    //The sun
+    sun = new gameObject(new SphereGeometry(1, 8, 6), new LambertMaterial({ color: 0xff0000 }), 0, 0, 0);
+    scene.add(sun);
     // Add an AmbientLight to the scene
     ambientLight = new AmbientLight(0x090909);
     scene.add(ambientLight);
@@ -105,7 +92,6 @@ function addStatsObject() {
 // Setup main game loop
 function gameLoop() {
     stats.update();
-    cube.rotation.y += control.rotationSpeed;
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
     // render the scene
@@ -128,4 +114,5 @@ function setupCamera() {
     camera.lookAt(new Vector3(0, 0, 0));
     console.log("Finished setting up Camera...");
 }
+
 //# sourceMappingURL=game.js.map
