@@ -36,7 +36,7 @@ var camera: PerspectiveCamera;
 var axes: AxisHelper;
 var sphere: Mesh;
 var ambientLight: AmbientLight;
-var spotLight: SpotLight;
+var pointLight: PointLight;
 var control: Control;
 var gui: GUI;
 var stats: Stats;
@@ -44,6 +44,12 @@ var step: number = 0;
 
 //Solar system objects
 var sun: Mesh;
+var planet1: Mesh;
+var planet2: Mesh;
+var planet3: Mesh;
+var planet4: Mesh;
+var planet5: Mesh;
+var moon: Mesh;
 
 
 function init() {
@@ -63,27 +69,41 @@ function init() {
      
      sun = new gameObject(
          new SphereGeometry(1, 8, 6),
-         new LambertMaterial({ color: 0xff0000}), 
+         new LambertMaterial({ color: 0x000000}), 
          0, 0, 0);
     
     scene.add(sun);
+    
+    //Add planets
+    planet1 = new gameObject(
+        new SphereGeometry (1, 8, 6),
+        new LambertMaterial({color: 0x00ff00}),
+        25, 0, 0);
+        
+    planet2 = new gameObject(
+        new SphereGeometry (2, 8, 6),
+        new LambertMaterial({color: 0x0000ff}),
+        -15, 0, 0);
+     
+     //Add planets as children to sun object   
+     sun.add(planet1);
+     sun.add(planet2);
     
     // Add an AmbientLight to the scene
     ambientLight = new AmbientLight(0x090909);
     scene.add(ambientLight);
     console.log("Added an Ambient Light to Scene");
 	
-    // Add a SpotLight to the scene
-    spotLight = new SpotLight(0xffffff);
-    spotLight.position.set(5.6, 23.1, 5.4);
-    spotLight.rotation.set(-0.8, 42.7, 19.5);
-    spotLight.castShadow = true;
-    scene.add(spotLight);
-    console.log("Added a SpotLight Light to Scene");
-    
+    //Add a PointLight to the scene
+    pointLight = new PointLight(0xffffff);
+    pointLight.position.set(0, 0, 0);
+    pointLight.castShadow = true;
+    scene.add(pointLight);
+    console.log("Added a PointLight to the scene");
+   
     // add controls
     gui = new GUI();
-    control = new Control(0.05);
+    control = new Control(0.01);
     addControl(control);
 
     // Add framerate stats
@@ -103,7 +123,7 @@ function onResize(): void {
 }
 
 function addControl(controlObject: Control): void {
-    gui.add(controlObject, 'rotationSpeed',-0.5,0.5);
+    gui.add(controlObject, 'rotationSpeed',-0.01,0.01);
 }
 
 function addStatsObject() {
@@ -120,6 +140,7 @@ function gameLoop(): void {
     stats.update();
     
     // render using requestAnimationFrame
+    sun.rotation.y += control.rotationSpeed;
     requestAnimationFrame(gameLoop);
 	
     // render the scene
@@ -129,7 +150,7 @@ function gameLoop(): void {
 // Setup default renderer
 function setupRenderer(): void {
     renderer = new Renderer();
-    renderer.setClearColor(0xEEEEEE, 1.0);
+    renderer.setClearColor(0x080808, 1.0);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     console.log("Finished setting up Renderer...");
@@ -139,7 +160,7 @@ function setupRenderer(): void {
 function setupCamera(): void {
     camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.x = 0.6;
-    camera.position.y = 16;
+    camera.position.y = 50;
     camera.position.z = -20.5;
     camera.lookAt(new Vector3(0, 0, 0));
     console.log("Finished setting up Camera...");
