@@ -24,6 +24,7 @@ var Color = THREE.Color;
 var Vector3 = THREE.Vector3;
 var Face3 = THREE.Face3;
 var Point = objects.Point;
+var CScreen = config.Screen;
 //Custom Game Objects
 var gameObject = objects.gameObject;
 var scene;
@@ -45,6 +46,7 @@ var planet3;
 var planet4;
 var planet5;
 var moon;
+var emptyObject = new Object3D();
 function init() {
     // Instantiate a new Scene object
     scene = new Scene();
@@ -55,24 +57,31 @@ function init() {
     scene.add(axes);
     console.log("Added Axis Helper to scene...");
     //The sun
-    sun = new gameObject(new SphereGeometry(1, 8, 6), new LambertMaterial({ color: 0x000000 }), 0, 0, 0);
+    sun = new gameObject(new SphereGeometry(1, 32, 32), new LambertMaterial({ color: 0x000000 }), 0, 0, 0);
     scene.add(sun);
     //Create planets
-    planet1 = new gameObject(new SphereGeometry(1, 8, 6), new LambertMaterial({ color: 0x00ff00 }), 25, 0, 0);
-    planet2 = new gameObject(new SphereGeometry(2, 8, 6), new LambertMaterial({ color: 0x0000ff }), -15, 0, 0);
-    planet3 = new gameObject(new SphereGeometry(6, 8, 6), new LambertMaterial({ color: 0xffb6e6 }), -40, 0, 10);
-    planet4 = new gameObject(new SphereGeometry(4, 8, 6), new LambertMaterial({ color: 0x3a3c2d }), 20, 0, 0);
-    planet5 = new gameObject(new SphereGeometry(5, 8, 6), new LambertMaterial({ color: 0xffb6c1 }), 0, 5, 10);
+    //Green planet
+    planet1 = new gameObject(new SphereGeometry(1, 32, 32), new LambertMaterial({ color: 0x00ff00 }), 25, 0, 0);
+    //Blue planet            
+    planet2 = new gameObject(new SphereGeometry(2, 32, 32), new LambertMaterial({ color: 0x0000ff }), -15, 0, 0);
+    //Pink planet    
+    planet3 = new gameObject(new SphereGeometry(6, 32, 32), new LambertMaterial({ color: 0xffb6e6 }), -40, 0, 10);
+    //Planet of indeterminant colour
+    planet4 = new gameObject(new SphereGeometry(4, 32, 32), new LambertMaterial({ color: 0x3a3c2d }), 20, 0, 0);
+    //Brown planet    
+    planet5 = new gameObject(new SphereGeometry(5, 32, 32), new LambertMaterial({ color: 0xf4a460 }), 0, 5, 10);
     //Create moon
-    moon = new gameObject(new SphereGeometry(0.5, 8, 6), new LambertMaterial({ color: 0xff00ff }), 6, 0, 0);
+    moon = new gameObject(new SphereGeometry(0.5, 32, 32), new LambertMaterial({ color: 0xff00ff }), 8, 0, 0);
     //Add planets as children to sun object   
     sun.add(planet1);
     sun.add(planet2);
     sun.add(planet3);
     sun.add(planet4);
     sun.add(planet5);
-    //Add moon as children to planet5
-    planet5.add(moon);
+    //Empty object becomes child to planet5; moon becomes child to emptyObject
+    //(This allows the moon to rotate at a different speed)
+    planet5.add(emptyObject);
+    emptyObject.add(moon);
     // Add an AmbientLight to the scene
     ambientLight = new AmbientLight(0x090909);
     scene.add(ambientLight);
@@ -81,7 +90,7 @@ function init() {
     pointLight = new PointLight(0xffffff);
     pointLight.position.set(0, 0, 0);
     pointLight.castShadow = true;
-    pointLight.intensity = 1;
+    pointLight.intensity = 2;
     scene.add(pointLight);
     console.log("Added a PointLight to the scene");
     // add controls
@@ -116,7 +125,7 @@ function gameLoop() {
     stats.update();
     // render using requestAnimationFrame
     sun.rotation.y += control.rotationSpeed;
-    planet5.rotation.y += 0.1;
+    emptyObject.rotation.y += 0.05;
     requestAnimationFrame(gameLoop);
     // render the scene
     renderer.render(scene, camera);
@@ -124,14 +133,14 @@ function gameLoop() {
 // Setup default renderer
 function setupRenderer() {
     renderer = new Renderer();
-    renderer.setClearColor(0xffffff, 1.0);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x080808, 1.0);
+    renderer.setSize(CScreen.WIDTH, CScreen.HEIGHT);
     renderer.shadowMap.enabled = true;
     console.log("Finished setting up Renderer...");
 }
 // Setup main camera for the scene
 function setupCamera() {
-    camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera = new PerspectiveCamera(45, CScreen.RATIO, 0.1, 1000);
     camera.position.x = 0;
     camera.position.y = 70;
     camera.position.z = -20.5;

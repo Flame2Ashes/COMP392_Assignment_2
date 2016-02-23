@@ -26,6 +26,7 @@ import Color = THREE.Color;
 import Vector3 = THREE.Vector3;
 import Face3 = THREE.Face3;
 import Point = objects.Point;
+import CScreen = config.Screen;
 
 //Custom Game Objects
 import gameObject = objects.gameObject;
@@ -51,6 +52,7 @@ var planet4: Mesh;
 var planet5: Mesh;
 var moon: Mesh;
 
+var emptyObject = new Object3D();
 
 function init() {
     // Instantiate a new Scene object
@@ -68,44 +70,49 @@ function init() {
      //The sun
      
      sun = new gameObject(
-         new SphereGeometry(1, 8, 6),
+         new SphereGeometry(1, 32, 32),
          new LambertMaterial({ color: 0x000000}), 
          0, 0, 0);
     
     scene.add(sun);
     
     //Create planets
+    
+    //Green planet
     planet1 = new gameObject(
-        new SphereGeometry(1, 8, 6),
+        new SphereGeometry(1, 32, 32),
         new LambertMaterial({color: 0x00ff00}),
         25, 0, 0);
         
+    //Blue planet            
     planet2 = new gameObject(
-        new SphereGeometry(2, 8, 6),
+        new SphereGeometry(2, 32, 32),
         new LambertMaterial({color: 0x0000ff}),
         -15, 0, 0);
-        
+    
+    //Pink planet    
     planet3 = new gameObject(
-        new SphereGeometry(6, 8, 6),
+        new SphereGeometry(6, 32, 32),
         new LambertMaterial({color: 0xffb6e6}),
         -40, 0, 10);
     
+    //Planet of indeterminant colour
     planet4 = new gameObject(
-        new SphereGeometry(4, 8, 6),
+        new SphereGeometry(4, 32, 32),
         new LambertMaterial({color: 0x3a3c2d}),
         20, 0, 0);
     
-        
+    //Brown planet    
     planet5 = new gameObject(
-        new SphereGeometry(5, 8, 6),
-        new LambertMaterial({color: 0xffb6c1}),
+        new SphereGeometry(5, 32, 32),
+        new LambertMaterial({color: 0xf4a460}),
         0, 5, 10);
      
      //Create moon
      moon = new gameObject(
-         new SphereGeometry(0.5, 8, 6),
+         new SphereGeometry(0.5, 32, 32),
          new LambertMaterial({color: 0xff00ff}),
-         6, 0, 0);
+         8, 0, 0);
      
      
      //Add planets as children to sun object   
@@ -115,9 +122,13 @@ function init() {
      sun.add(planet4);
      sun.add(planet5);
      
-     //Add moon as children to planet5
+     //Empty object becomes child to planet5; moon becomes child to emptyObject
+     //(This allows the moon to rotate at a different speed)
      
-     planet5.add(moon);
+     planet5.add(emptyObject);
+     emptyObject.add(moon);
+     
+    
     
     // Add an AmbientLight to the scene
     ambientLight = new AmbientLight(0x090909);
@@ -128,7 +139,7 @@ function init() {
     pointLight = new PointLight(0xffffff);
     pointLight.position.set(0, 0, 0);
     pointLight.castShadow = true;
-    pointLight.intensity = 1;
+    pointLight.intensity = 2;
     scene.add(pointLight);
     console.log("Added a PointLight to the scene");
    
@@ -172,7 +183,7 @@ function gameLoop(): void {
     
     // render using requestAnimationFrame
     sun.rotation.y += control.rotationSpeed;
-    planet5.rotation.y += 0.1;
+    emptyObject.rotation.y += 0.05;
     requestAnimationFrame(gameLoop);
 	
     // render the scene
@@ -183,14 +194,14 @@ function gameLoop(): void {
 function setupRenderer(): void {
     renderer = new Renderer();
     renderer.setClearColor(0x080808, 1.0);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(CScreen.WIDTH, CScreen.HEIGHT);
     renderer.shadowMap.enabled = true;
     console.log("Finished setting up Renderer...");
 }
 
 // Setup main camera for the scene
 function setupCamera(): void {
-    camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera = new PerspectiveCamera(45, CScreen.RATIO, 0.1, 1000);
     camera.position.x = 0;
     camera.position.y = 70;
     camera.position.z = -20.5;
