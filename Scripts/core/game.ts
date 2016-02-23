@@ -82,13 +82,13 @@ function init() {
     planet1 = new gameObject(
         new SphereGeometry(1, 32, 32),
         new LambertMaterial({color: 0x00ff00}),
-        25, 0, 0);
+        10, 0, -25);
         
     //Blue planet            
     planet2 = new gameObject(
         new SphereGeometry(2, 32, 32),
         new LambertMaterial({color: 0x0000ff}),
-        -15, 0, 0);
+        -15, 0, -5);
     
     //Pink planet    
     planet3 = new gameObject(
@@ -106,7 +106,7 @@ function init() {
     planet5 = new gameObject(
         new SphereGeometry(5, 32, 32),
         new LambertMaterial({color: 0xf4a460}),
-        0, 5, 10);
+        5, 5, 10);
      
      //Create moon
      moon = new gameObject(
@@ -136,10 +136,12 @@ function init() {
     console.log("Added an Ambient Light to Scene");
 	
     //Add a PointLight to the scene
+    //(Represents the sun's light)
     pointLight = new PointLight(0xffffff);
     pointLight.position.set(0, 0, 0);
     pointLight.castShadow = true;
     pointLight.intensity = 2;
+    pointLight.distance = 50;
     scene.add(pointLight);
     console.log("Added a PointLight to the scene");
    
