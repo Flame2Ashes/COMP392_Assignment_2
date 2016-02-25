@@ -212,13 +212,14 @@ function addStatsObject() {
 function gameLoop(): void {
     stats.update();
     // render using requestAnimationFrame
+
     //rotation speeds
     moonRotationObject.rotation.y += 0.05;
     planet1RotationObject.rotation.y += 0.03;
     planet2RotationObject.rotation.y += 0.025;
     planet3RotationObject.rotation.y += 0.02;
     planet4RotationObject.rotation.y += 0.015;
-    planet5RotationObject.rotation.y += 0.01;
+    planet5RotationObject.rotation.y += 0.01;    
     requestAnimationFrame(gameLoop);
 	
     // render the scene
