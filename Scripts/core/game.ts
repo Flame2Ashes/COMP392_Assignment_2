@@ -19,6 +19,7 @@ import Mesh = THREE.Mesh;
 import Object3D = THREE.Object3D;
 import SpotLight = THREE.SpotLight;
 import PointLight = THREE.PointLight;
+import DirectionalLight = THREE.DirectionalLight;
 import AmbientLight = THREE.AmbientLight;
 import Control = objects.Control;
 import GUI = dat.GUI;
@@ -38,6 +39,7 @@ var axes: AxisHelper;
 var sphere: Mesh;
 var ambientLight: AmbientLight;
 var pointLight: PointLight;
+var spotLight: SpotLight;
 var control: Control;
 var gui: GUI;
 var stats: Stats;
@@ -57,12 +59,14 @@ var planet5: Mesh;
 var moon: Mesh;
 
 //Empty objects
+//Rotation objects
 var moonRotationObject = new Object3D();
 var planet1RotationObject = new Object3D();
 var planet2RotationObject = new Object3D();
 var planet3RotationObject = new Object3D();
 var planet4RotationObject = new Object3D();
 var planet5RotationObject = new Object3D();
+
 
 function init() {
     // Instantiate a new Scene object
@@ -73,23 +77,15 @@ function init() {
     setupCamera(); // setup the camera
 	
     // add an axis helper to the scene
-    axes = new AxisHelper(100);
+    axes = new AxisHelper(500);
     scene.add(axes);
     console.log("Added Axis Helper to scene...");
     
      //The sun
-     sunGeometry = new SphereGeometry(1, 32, 32);
-     sunMaterial = new LambertMaterial({color: 0xffff00});
-     sunMaterial.transparent = true;
+     sunGeometry = new SphereGeometry(100, 32, 32);
+     sunMaterial = new LambertMaterial({color: 0xFFFFFF});
      sun = new Mesh(sunGeometry, sunMaterial);
-    /* 
-     sun = new gameObject(
-         new SphereGeometry(1, 32, 32),
-         new LambertMaterial({ color: 0x000000}), 
-         0, 0, 0);
-         
-         */
-    
+     
     scene.add(sun);
     
     //Create planets
@@ -98,14 +94,14 @@ function init() {
     planet1 = new gameObject(
         new SphereGeometry(10, 32, 32),
         new LambertMaterial({color: 0x5fb43c}),
-         25, 0, 100);
+         150, 0, 200);
     planet1.name = "Green planet";
         
     //Blue planet            
     planet2 = new gameObject(
         new SphereGeometry(20, 32, 32),
         new LambertMaterial({color: 0x3d45a9}),
-        -150, 0, -50);
+        250, 0, 350);
     planet2.name = "Blue planet";
     
     
@@ -113,22 +109,24 @@ function init() {
     planet3 = new gameObject(
         new SphereGeometry(30, 32, 32),
         new LambertMaterial({color: 0x9671e0}),
-        250, 0, 0);
+        350, 0, 600);
     planet3.name = "Violet planet";
     
-    //Brown planet    
+    //Pink planet    
     planet4 = new gameObject(
+        new SphereGeometry(40, 32, 32),
+        new LambertMaterial({color: 0xffb6e6}),
+        500, 0, 700);
+    planet4.name = "Pink planet";
+    
+    //Brown planet    
+    planet5 = new gameObject(
         new SphereGeometry(50, 32, 32),
         new LambertMaterial({color: 0xf4a460}),
-       350, 0, -200);
-    planet4.name = "Brown planet";
+       650, 0, 800);
+    planet5.name = "Brown planet";
     
-     //Pink planet    
-    planet5 = new gameObject(
-        new SphereGeometry(45, 32, 32),
-        new LambertMaterial({color: 0xffb6e6}),
-        -500, 0, 100);
-    planet5.name = "Pink planet";
+
      
      //Create moon
      moon = new gameObject(
@@ -156,8 +154,6 @@ function init() {
      planet3.add(moonRotationObject);
      moonRotationObject.add(moon);
      
-    
-    
     // Add an AmbientLight to the scene
     ambientLight = new AmbientLight(0x090909);
     scene.add(ambientLight);
@@ -166,16 +162,18 @@ function init() {
     //Add a PointLight to the scene
     //(Represents the sun's light)
     pointLight = new PointLight(0xffffff);
-    pointLight.position.set(0, 0, 0);
+    pointLight.position.set(0, 100, 0)
     pointLight.castShadow = true;
     pointLight.intensity = 2;
-    pointLight.distance = 1000;
+    pointLight.shadowMapHeight = 2048;
+    pointLight.shadowMapWidth = 2048;
     scene.add(pointLight);
     console.log("Added a PointLight to the scene");
+    
    
     // add controls
     gui = new GUI();
-    control = new Control(0.01);
+    control = new Control();
     addControl(control);
 
     // Add framerate stats
@@ -195,7 +193,9 @@ function onResize(): void {
 }
 
 function addControl(controlObject: Control): void {
-    gui.add(controlObject, 'rotationSpeed',-0.01,0.01);
+    gui.add(controlObject, 'switchToPlanet');
+    gui.add(controlObject, 'switchToSystem');
+            
 }
 
 function addStatsObject() {
@@ -207,10 +207,10 @@ function addStatsObject() {
     document.body.appendChild(stats.domElement);
 }
 
+
 // Setup main game loop
 function gameLoop(): void {
     stats.update();
-    
     // render using requestAnimationFrame
     //rotation speeds
     moonRotationObject.rotation.y += 0.05;
@@ -236,10 +236,10 @@ function setupRenderer(): void {
 
 // Setup main camera for the scene
 function setupCamera(): void {
-    camera = new PerspectiveCamera(45, CScreen.RATIO, 0.1, 2000);
-    camera.position.x = -600;
-    camera.position.y = 350;
-    camera.position.z = 600;
+    camera = new PerspectiveCamera(45, CScreen.RATIO, 0.1, 5000);
+    camera.position.x = -1800;
+    camera.position.y = 1700;
+    camera.position.z = 1800;
     camera.lookAt(new Vector3(0, 0, 0));
     console.log("Finished setting up Camera...");
 }
