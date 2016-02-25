@@ -35,7 +35,8 @@ var axes;
 var sphere;
 var ambientLight;
 var pointLight;
-var spotLight;
+var spotLight1;
+var spotLight2;
 var control;
 var gui;
 var stats;
@@ -71,27 +72,27 @@ function init() {
     console.log("Added Axis Helper to scene...");
     //The sun
     sunGeometry = new SphereGeometry(100, 32, 32);
-    sunMaterial = new LambertMaterial({ color: 0xFFFFFF });
+    sunMaterial = new LambertMaterial({ color: 0xffff4d });
     sun = new Mesh(sunGeometry, sunMaterial);
     scene.add(sun);
     //Create planets
     //Green planet
-    planet1 = new gameObject(new SphereGeometry(10, 32, 32), new LambertMaterial({ color: 0x5fb43c }), 150, 0, 200);
+    planet1 = new gameObject(new SphereGeometry(10, 32, 32), new LambertMaterial({ color: 0x00802b }), 150, 0, 200);
     planet1.name = "Green planet";
     //Blue planet            
-    planet2 = new gameObject(new SphereGeometry(20, 32, 32), new LambertMaterial({ color: 0x3d45a9 }), 250, 0, 350);
+    planet2 = new gameObject(new SphereGeometry(20, 32, 32), new LambertMaterial({ color: 0x000099 }), 250, 0, 350);
     planet2.name = "Blue planet";
     //Violet planet
-    planet3 = new gameObject(new SphereGeometry(30, 32, 32), new LambertMaterial({ color: 0x9671e0 }), 350, 0, 600);
+    planet3 = new gameObject(new SphereGeometry(30, 32, 32), new LambertMaterial({ color: 0x660066 }), 350, 0, 600);
     planet3.name = "Violet planet";
     //Pink planet    
-    planet4 = new gameObject(new SphereGeometry(40, 32, 32), new LambertMaterial({ color: 0xffb6e6 }), 500, 0, 700);
+    planet4 = new gameObject(new SphereGeometry(40, 32, 32), new LambertMaterial({ color: 0x990073 }), 500, 0, 700);
     planet4.name = "Pink planet";
     //Brown planet    
-    planet5 = new gameObject(new SphereGeometry(50, 32, 32), new LambertMaterial({ color: 0xf4a460 }), 650, 0, 800);
+    planet5 = new gameObject(new SphereGeometry(50, 32, 32), new LambertMaterial({ color: 0x805500 }), 650, 0, 800);
     planet5.name = "Brown planet";
     //Create moon
-    moon = new gameObject(new SphereGeometry(5, 32, 32), new LambertMaterial({ color: 0xff00ff }), 50, 0, 0);
+    moon = new gameObject(new SphereGeometry(5, 32, 32), new LambertMaterial({ color: 0x660066 }), 50, 0, 0);
     moon.name = "moon";
     //Add rotation objects as children to sun object 
     sun.add(planet1RotationObject);
@@ -109,15 +110,15 @@ function init() {
     planet3.add(moonRotationObject);
     moonRotationObject.add(moon);
     // Add an AmbientLight to the scene
-    ambientLight = new AmbientLight(0x090909);
+    ambientLight = new AmbientLight(0x8c8c8c);
     scene.add(ambientLight);
     console.log("Added an Ambient Light to Scene");
     //Add a PointLight to the scene
     //(Represents the sun's light)
     pointLight = new PointLight(0xffffff);
-    pointLight.position.set(0, 100, 0);
+    pointLight.position.set(0, 0, 0);
     pointLight.castShadow = true;
-    pointLight.intensity = 2;
+    pointLight.intensity = 1;
     pointLight.shadowMapHeight = 2048;
     pointLight.shadowMapWidth = 2048;
     scene.add(pointLight);
