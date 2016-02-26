@@ -1,4 +1,10 @@
 /// <reference path="_reference.ts"/>
+//File name: game.ts
+//Author: Angelina Gutierrez
+//Last Modified by: Angelina Gutierrez
+//Date last modified 2/26/2016
+//Description: The main file that creates and renders the scene. 
+//All textures from Textures.com and Solarsystemscope.com.
 // MAIN GAME FILE
 // THREEJS Aliases
 var Scene = THREE.Scene;
@@ -26,6 +32,7 @@ var Vector3 = THREE.Vector3;
 var Face3 = THREE.Face3;
 var Point = objects.Point;
 var CScreen = config.Screen;
+var RingGeometry = THREE.RingGeometry;
 //Custom Game Objects
 var gameObject = objects.gameObject;
 var scene;
@@ -53,6 +60,7 @@ var planet3;
 var planet4;
 var planet5;
 var moon;
+var ring;
 //Empty objects
 //Rotation objects
 var moonRotationObject = new Object3D();
@@ -72,27 +80,31 @@ function init() {
     console.log("Added Axis Helper to scene...");
     //The sun
     sunGeometry = new SphereGeometry(100, 32, 32);
-    sunMaterial = new LambertMaterial({ color: 0xffff4d });
+    sunMaterial = new LambertMaterial({ map: THREE.ImageUtils.loadTexture("img/preview_sun.jpg") });
     sun = new Mesh(sunGeometry, sunMaterial);
     scene.add(sun);
     //Create planets
     //Green planet
-    planet1 = new gameObject(new SphereGeometry(10, 32, 32), new LambertMaterial({ color: 0x00802b }), 150, 0, 200);
+    planet1 = new gameObject(new SphereGeometry(10, 32, 32), new LambertMaterial({ map: THREE.ImageUtils.loadTexture("img/MarbleGreen0022_1_M.jpg") }), 150, 0, 200);
     planet1.name = "Green planet";
     //Blue planet            
-    planet2 = new gameObject(new SphereGeometry(20, 32, 32), new LambertMaterial({ color: 0x000099 }), 250, 0, 350);
+    planet2 = new gameObject(new SphereGeometry(20, 32, 32), new LambertMaterial({ map: THREE.ImageUtils.loadTexture("img/Snow0064_3_s.jpg") }), 250, 0, 350);
     planet2.name = "Blue planet";
+    //Create a ring for the Blue Planet
+    ring = new gameObject(new RingGeometry(30, 80, 30, 8), new LambertMaterial({ map: THREE.ImageUtils.loadTexture("img/Rust0175_2_S.jpg") }), 0, 0, 0);
+    ring.name = "Ring";
+    planet2.add(ring);
     //Violet planet
-    planet3 = new gameObject(new SphereGeometry(30, 32, 32), new LambertMaterial({ color: 0x660066 }), 350, 0, 600);
+    planet3 = new gameObject(new SphereGeometry(30, 32, 32), new LambertMaterial({ map: THREE.ImageUtils.loadTexture("img/RockSharp0018_3_S.jpg") }), 350, 0, 600);
     planet3.name = "Violet planet";
     //Pink planet    
-    planet4 = new gameObject(new SphereGeometry(40, 32, 32), new LambertMaterial({ color: 0x990073 }), 500, 0, 700);
+    planet4 = new gameObject(new SphereGeometry(40, 32, 32), new LambertMaterial({ map: THREE.ImageUtils.loadTexture("img/RockSediment0001_1_S.jpg") }), 500, 0, 700);
     planet4.name = "Pink planet";
     //Brown planet    
-    planet5 = new gameObject(new SphereGeometry(50, 32, 32), new LambertMaterial({ color: 0x805500 }), 650, 0, 800);
+    planet5 = new gameObject(new SphereGeometry(50, 32, 32), new LambertMaterial({ map: THREE.ImageUtils.loadTexture("img/MetalBase0097_1_S.jpg") }), 650, 0, 800);
     planet5.name = "Brown planet";
     //Create moon
-    moon = new gameObject(new SphereGeometry(5, 32, 32), new LambertMaterial({ color: 0x660066 }), 50, 0, 0);
+    moon = new gameObject(new SphereGeometry(5, 32, 32), new LambertMaterial({ map: THREE.ImageUtils.loadTexture("img/RockRough0005_1_S.jpg") }), 50, 0, 0);
     moon.name = "moon";
     //Add rotation objects as children to sun object 
     sun.add(planet1RotationObject);
@@ -176,10 +188,10 @@ function setupRenderer() {
 }
 // Setup main camera for the scene
 function setupCamera() {
-    camera = new PerspectiveCamera(45, CScreen.RATIO, 0.1, 5000);
-    camera.position.x = -1800;
-    camera.position.y = 1700;
-    camera.position.z = 1800;
+    camera = new PerspectiveCamera(40, CScreen.RATIO, 0.1, 5000);
+    camera.position.x = -1500;
+    camera.position.y = 1400;
+    camera.position.z = 1500;
     camera.lookAt(new Vector3(0, 0, 0));
     console.log("Finished setting up Camera...");
 }
